@@ -30,14 +30,14 @@ public class InputValidator {
 
     private void requireSizeOfSix(List<Integer> numbers) {
         if (numbers.size() != 6) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("[ERROR] 6개의 번호를 입력해야 합니다.");
         }
     }
 
     private void requireNoDuplicate(List<Integer> numbers) {
         Set<Integer> set = new HashSet<>(numbers);
         if (set.size() != numbers.size()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("[ERROR] 중복인 번호가 없어야 합니다.");
         }
     }
 
@@ -46,7 +46,7 @@ public class InputValidator {
                                                             .filter(n -> !(n >= 1 && n <= 45))
                                                             .findFirst();
         if (optionalNumberNotInRange.isPresent()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("[ERROR] 1-45 범위의 번호를 입력해야 합니다.");
         }
     }
 }
