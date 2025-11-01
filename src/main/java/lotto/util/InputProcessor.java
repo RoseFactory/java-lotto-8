@@ -26,4 +26,10 @@ public class InputProcessor {
         inputValidator.validateWinningCombination(chosenNumbers);
         return chosenNumbers;
     }
+
+    public int chooseBonusNumber(List<Integer> winningCombination, String input) {
+        int bonusNumber = inputParser.parseBonusNumber(input);
+        inputValidator.validateBonusNumber(winningCombination, bonusNumber);
+        return bonusNumber;
+    }
 }

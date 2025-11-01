@@ -20,4 +20,8 @@ public class InputParser {
             .boxed()
             .toList();
     }
+
+    public int parseBonusNumber(String input) {
+        return Integer.parseInt(input);
+    }
 }

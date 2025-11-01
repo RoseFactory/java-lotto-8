@@ -47,10 +47,10 @@ class InputValidatorTest {
     }
 
     @Test
-    @DisplayName("중복인 번호가 있으면 예외를 던진다.")
+    @DisplayName("당첨 번호에 중복인 번호가 있으면 예외를 던진다.")
     void should_throwException_when_duplicate() {
         // given
-        List<Integer> input = List.of(1,1,2,3,4,5);
+        List<Integer> input = List.of(1, 1, 2, 3, 4, 5);
 
         // when, then
         assertThatThrownBy(() -> inputValidator.validateWinningCombination(input))
@@ -58,7 +58,7 @@ class InputValidatorTest {
     }
 
     @Test
-    @DisplayName("1-45가 아닌 번호가 포함되면 예외를 던진다.")
+    @DisplayName("당첨 번호에 1-45가 아닌 번호가 포함되면 예외를 던진다.")
     void should_throwException_when_numberNotInRange() {
         // given
         List<Integer> containNegative = List.of(-1, 2, 3, 4, 5, 6);
@@ -67,7 +67,8 @@ class InputValidatorTest {
         // when, then
         assertThatThrownBy(() -> inputValidator.validateWinningCombination(containNegative))
             .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> inputValidator.validateWinningCombination(containBiggerThanFortyFive))
+        assertThatThrownBy(
+            () -> inputValidator.validateWinningCombination(containBiggerThanFortyFive))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -75,13 +76,37 @@ class InputValidatorTest {
     @DisplayName("입력 개수가 6개가 아니면 예외를 던진다")
     void should_throwException_when_inputSizeIsNotSix() {
         // given
-        List<Integer> fiveIntegers = List.of(1,2,3,4,5);
-        List<Integer> sevenIntegers = List.of(1,2,3,4,5,6,7);
+        List<Integer> fiveIntegers = List.of(1, 2, 3, 4, 5);
+        List<Integer> sevenIntegers = List.of(1, 2, 3, 4, 5, 6, 7);
 
         // when, then
         assertThatThrownBy(() -> inputValidator.validateWinningCombination(fiveIntegers))
             .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> inputValidator.validateWinningCombination(sevenIntegers))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {99, -1, 123})
+    @DisplayName("보너스 번호가 1-45까지의 범위의 숫자가 아니면 예외를 던진다.")
+    void should_throwException_when_bonusNumberNotFromOneToFortyFive(int input) {
+        // given
+        List<Integer> winningCombination = List.of(1, 2, 3, 4, 5, 6);
+
+        // when, then
+        assertThatThrownBy(() -> inputValidator.validateBonusNumber(winningCombination, input))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("보너스 번호는 기존 당첨 번호와 중복일 수 없다.")
+    void should_throwException_when_bonusNumberAlreadyInWinningCombination() {
+        // given
+        List<Integer> winningCombination = List.of(1, 2, 3, 4, 5, 6);
+        int input = 1;
+
+        // when, then
+        assertThatThrownBy(() -> inputValidator.validateBonusNumber(winningCombination, input))
             .isInstanceOf(IllegalArgumentException.class);
     }
 }

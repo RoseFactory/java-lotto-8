@@ -1,5 +1,6 @@
 package lotto.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,14 @@ public class InputValidator {
         requireSizeOfSix(numbers);
         requireNoDuplicate(numbers);
         requireNumbersInRangeOneToFortyFive(numbers);
+    }
+
+    public void validateBonusNumber(List<Integer> winningCombination, int bonusNumber) {
+        List<Integer> allWinningNumbers = new ArrayList<>(winningCombination);
+        allWinningNumbers.add(bonusNumber);
+
+        requireNumbersInRangeOneToFortyFive(List.of(bonusNumber));
+        requireNoDuplicate(allWinningNumbers);
     }
 
     private void requireSizeOfSix(List<Integer> numbers) {
