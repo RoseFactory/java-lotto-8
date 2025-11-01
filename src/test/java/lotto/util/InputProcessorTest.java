@@ -3,7 +3,9 @@ package lotto.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -52,5 +54,40 @@ class InputProcessorTest {
 
         // when
         assertThatThrownBy(() -> inputProcessor.getPurchaseQuantity(input));
+    }
+
+    @Test
+    @DisplayName("중복되지 않는 1-45까지의 6개 숫자를 입력하면 해당 숫자를 반환한다.")
+    void should_returnWinningNumbers_when_validInput() {
+        // given
+        String input = "1,2,3,4,5,6";
+
+        // when
+        List<Integer> chosenCombination = inputProcessor.chooseWinningCombination(input);
+
+        // then
+        assertThat(chosenCombination).containsAll(List.of(1, 2, 3, 4, 5, 6));
+    }
+
+    @Test
+    @DisplayName("중복되는 숫자가 있으면 예외를 던진다.")
+    void should_throwException_when_duplicateNumber() {
+        // given
+        String input = "1,1,2,3,4,5";
+
+        // when, then
+        assertThatThrownBy(() -> inputProcessor.chooseWinningCombination(input))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1,2,3,4,5,999", "-1,1,2,3,4,5"})
+    @DisplayName("1-45까지의 범위의 숫자가 아니면 예외를 던진다.")
+    void should_throwException_when_NumberNotFromOneToFortyFive(String input) {
+        // given = parameter
+
+        // when, then
+        assertThatThrownBy(() -> inputProcessor.chooseWinningCombination(input))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }

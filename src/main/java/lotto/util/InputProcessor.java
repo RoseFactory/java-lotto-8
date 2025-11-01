@@ -1,5 +1,7 @@
 package lotto.util;
 
+import java.util.List;
+
 public class InputProcessor {
 
     private final InputParser inputParser;
@@ -17,5 +19,11 @@ public class InputProcessor {
         int purchaseAmount = inputParser.parsePurchaseAmount(input);
         inputValidator.validatePurchaseAmount(purchaseAmount);
         return inputConverter.toPurchaseQuantity(purchaseAmount);
+    }
+
+    public List<Integer> chooseWinningCombination(String input) {
+        List<Integer> chosenNumbers = inputParser.parseChosenNumbers(input);
+        inputValidator.validateWinningCombination(chosenNumbers);
+        return chosenNumbers;
     }
 }
