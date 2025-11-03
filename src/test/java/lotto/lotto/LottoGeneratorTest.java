@@ -21,5 +21,12 @@ class LottoGeneratorTest {
 
         // then
         assertThat(lottos.size()).isEqualTo(5);
+        for(Lotto lotto : lottos) {
+            List<Integer> lottoNumbers = lotto.getNumbers();
+            assertThat(lottoNumbers)
+                .hasSize(6)
+                .doesNotHaveDuplicates()
+                .allMatch(n -> n >= 1 && n <= 45);
+        }
     }
 }
